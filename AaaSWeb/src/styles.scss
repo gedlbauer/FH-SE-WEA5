@@ -1,0 +1,42 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '_variables.scss';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.drawer-container {
+    width: 100%;
+    height: 100%;
+}
+  
+.main-content {
+    display: flex;
+    flex: 1;
+    padding: 50px 50px;
+    justify-self: stretch;
+}
+
+.sidenav {
+    width: 241px;
+}
+
+.active-list-item{
+    background-color: $active-route-background;
+    color: $primary !important;
+    &:hover, &:focus {
+        background-color: $active-route-background-hover !important;
+    }
+}
+
+a:hover, a:focus {
+    font-weight: 500;
+}
+
+.loading-animation {
+    margin-left: auto;
+    margin-right: auto;
+    top:50%;
+    display: block;
+    text-align: center;
+}

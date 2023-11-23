@@ -1,0 +1,100 @@
+<h1>{{detector.typeName ?? '' | translate}}</h1>
+<form [formGroup]="myForm" (ngSubmit)="submitForm()">
+    <div>
+        <mat-form-field appearance="standard">
+            <mat-label>{{'detector.telemetryName'|translate}}</mat-label>
+            <input name="telemetryName" formControlName="telemetryName" type="text" matInput>
+            <mat-error *ngIf="myForm?.get('telemetryName')?.hasError('required')">{{ 'detector.telemetryRequired' | translate }}</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="standard">
+            <mat-label>{{'detector.checkInterval'|translate}}</mat-label>
+            <input name="checkInterval" formControlName="checkInterval" type="number" min="500" matInput>
+            <mat-error *ngIf="myForm?.get('checkInterval')?.hasError('required')">{{ 'detector.checkIntervalRequired' | translate }}
+            </mat-error>
+            <mat-error *ngIf="myForm?.get('checkInterval')?.hasError('min')">
+                {{ 'detector.checkIntervalMin' | translate:{minVal: 500} }}
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="standard">
+            <mat-label>{{'actionTerm'|translate}}</mat-label>
+            <mat-select formControlName="action" name="action" [value]="detector.action" [compareWith]="actionComparer">
+                <mat-option *ngFor="let action of actions$|async" [value]="action">
+                    {{action.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <ng-container *ngIf="detector?.typeName === 'MinMaxDetector'">
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'detector.min' | translate }}</mat-label>
+                <input name="min" formControlName="min" type="number" matInput>
+                <mat-error *ngIf="myForm?.get('minVal')?.hasError('required')">{{ 'detector.minRequired' | translate }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'detector.max' | translate }}</mat-label>
+                <input name="max" formControlName="max" type="number" matInput>
+                <mat-error *ngIf="myForm?.get('maxVal')?.hasError('required')">{{ 'detector.maxValueRequired' | translate }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'detector.MaxOccurs' | translate }}</mat-label>
+                <input name="maxOccurs" formControlName="maxOccurs" type="number" matInput>
+                <mat-error *ngIf="myForm?.get('maxOccurs')?.hasError('required')">{{ 'detector.maxOccursRequired' | translate }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'detector.timeWindow' | translate }}</mat-label>
+                <input name="timeWindow" formControlName="timeWindow" type="number" min="1000" matInput>
+                <mat-error *ngIf="myForm?.get('timeWindow')?.hasError('required')">
+                    {{ 'detector.timeWindowRequired' | translate }}
+                </mat-error>
+                <mat-error *ngIf="myForm?.get('timeWindow')?.hasError('min')">
+                    {{ 'detector.timeWindowMin' | translate:{minVal:1000} }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="detector?.typeName?.endsWith('SlidingWindowDetector')">
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'detector.timeWindow' | translate }}</mat-label>
+                <input name="timeWindow" formControlName="timeWindow" type="number" matInput>
+                <mat-error *ngIf="myForm?.get('timeWindow')?.hasError('required')">
+                    {{ 'detector.timeWindowRequired' | translate }}
+                </mat-error>
+                <mat-error *ngIf="myForm?.get('timeWindow')?.hasError('min')">
+                    {{ 'detector.timeWindowMin' | translate:{minVal:1000} }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-checkbox name="useGreater" formControlName="useGreater">{{ 'detector.useGreater' | translate }}</mat-checkbox>
+            <mat-error *ngIf="myForm?.get('useGreater')?.hasError('required')">
+                {{ 'detector.useGreaterRequired' | translate }}
+            </mat-error>
+        </div>
+        <div>
+            <mat-form-field appearance="standard">
+                <mat-label>{{ 'detector.threshold' | translate }}</mat-label>
+                <input name="threshold" formControlName="threshold" type="text" matInput>
+                <mat-error *ngIf="myForm?.get('threshold')?.hasError('required')">
+                    {{ 'detector.thresholdRequired' | translate }}
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </ng-container>
+    <button mat-raised-button color="accent" type="submit" class="ui button"
+        [disabled]="myForm?.invalid">{{'save'|translate}}</button>
+</form>
